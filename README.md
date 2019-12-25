@@ -1,2 +1,2 @@
-EmailThreadViz
+Email Thread Vis
 ==============
