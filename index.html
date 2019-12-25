@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Email visualization</title>
+
+    <script src="d3js/d3.v3.min.js"></script>
+	<script src="jquery/jquery.js"></script>
+    <script src="timeline.js"></script>
+	<script src="threadlength.js"></script>
+	<script src="contactslist.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<link href="timeline.css" rel="stylesheet" type="text/css" />
+	<link href="threadlength.css" rel="stylesheet" type="text/css" />
+	<link href="contactslist.css" rel="stylesheet" type="text/css" />
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="layout.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid top-buffer">
+			<div class="col-md-1"></div>
+			<div id="chart-area" class="col-md-10">
+				<ul class="nav nav-pills nav-justified">
+					<li class="active">
+						<a href="#tab1" data-toggle="tab">Thread Timeline</a>
+					</li>
+					<li>
+						<a href="#tab2" data-toggle="tab">Thread Length</a>
+					</li>
+					<li>
+						<a href="#tab3" data-toggle="tab">Contact List</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab1">
+						<div id="timeline"></div>
+					</div>
+					<div class="tab-pane" id="tab2">
+						<div class="threadlength">
+							<svg class="chart"></svg>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab3">
+						<div class="contactsDiv">
+							<div class="list-group"></div>
+						</div>
+						<svg class="graphSvg"></svg>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-1"></div>
+		</div>
+	</div>
+
+	<script>
+		var timelineElement = "#timeline";
+		var timeLineSource = "timeline.csv";
+
+		// Construct timeline
+		d3.csv(timeLineSource, function(dataset) {
+
+			timeline(timelineElement)
+				.data(dataset)
+				.band("mainBand", 0.80)
+				.band("naviBand", 0.10)
+				.xAxis("mainBand")
+				.tooltips("mainBand")
+				.xAxis("naviBand")
+				.labels("mainBand")
+				.labels("naviBand")
+				.brush("naviBand", ["mainBand"])
+				.redraw();
+
+		});
+
+		threadLength();
+		contactsList();
+		$(window).load(function(){
+			$('#tab a[href="#tab1"]').tab('show');
+		});
+	</script>
+</body>
+
+</html>
